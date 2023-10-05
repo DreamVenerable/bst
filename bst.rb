@@ -56,17 +56,19 @@ class Tree
     elsif root.right.nil?
       root = root.left
     else
-
       if root.right.left.nil?
-        holder_one = root.left
-        root = root.right
-        root.left = holder_one
+        holder = root.right.data
+        delete(holder)
+        root.data = holder
       else
-        # holder_two = root.
-        root.data = root.right.left.data
-        root.right.left = nil
+        temp = root.right
+        while temp.left != nil
+          temp = temp.left
+        end
+        holder = temp.data
+        delete(holder)
+        root.data = holder
       end
-
       root
     end
   end
@@ -85,5 +87,5 @@ tree.insert(0)
 tree.insert(200)
 tree.insert(199)
 tree.pretty_print
-tree.delete(8)
+tree.delete(67)
 tree.pretty_print
