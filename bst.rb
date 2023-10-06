@@ -5,6 +5,7 @@ class Node
     @data = data
     @left = left
     @right = right
+    @h = 0
   end
 end
 
@@ -73,6 +74,92 @@ class Tree
     end
   end
 
+  def find(root = @root, value)
+    return root if root.nil? || root.data == value
+    root.data > value ? find(root.left, value) : find(root.right, value)
+  end
+
+  def level_order
+    queue = []
+    arr = []
+    position = @root
+    queue.push(position)
+
+    until queue.empty?
+      position = queue[0]
+      arr.push(queue[0].data)
+      queue.shift
+      queue.push(position.left) unless position.left.nil?
+      queue.push(position.right) unless position.right.nil?
+    end
+
+    arr
+  end
+
+  def inorder(root = @root, arr = [])
+    return root if root.nil?
+
+    inorder(root.left, arr)
+    arr.push(root.data)
+    inorder(root.right, arr)
+
+    arr
+  end
+
+  def preorder(root = @root, arr = [])
+    return root if root.nil?
+
+    arr.push(root.data)
+    preorder(root.left, arr)
+    preorder(root.right, arr)
+
+    arr
+  end
+
+  def postorder(root = @root, arr = [])
+    return root if root.nil?
+
+    postorder(root.left, arr)
+    postorder(root.right, arr)
+    arr.push(root.data)
+
+    arr
+  end
+
+  def height(node = @root, counter = -2)
+    return counter if node.nil?
+
+    counter += 1
+    [height(node.left, counter), height(node.right, counter)].max
+  end
+
+  def depth(node)
+    return nil if node.nil?
+
+    current_node = @root
+    counter = 0
+
+    until current_node.data == node.data
+      counter += 1
+      current_node = current_node.left if node.data < current_node.data
+      current_node = current_node.right if node.data > current_node.data
+    end
+
+    counter
+  end
+
+  def balanced?
+    left = height(@root.left)
+    right = height(@root.right)
+    (right - left).between?(-1, 1)
+  end
+
+  def rebalance
+    @arr = inorder
+    end_i = @arr.length - 1
+    @root = build_tree(@arr, 0, end_i)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -80,12 +167,101 @@ class Tree
   end
 end
 
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+
+
+arr = Array.new(15) { rand(1..100) }
+tree = Tree.new(arr)
+puts "Tree created!"
+sleep 0.5
 
 tree.build_tree
-tree.insert(0)
-tree.insert(200)
-tree.insert(199)
+puts "Building tree..."
+sleep 0.5
+
 tree.pretty_print
-tree.delete(67)
+sleep 0.5
+
+puts "Tree balanced?"
+sleep 0.5
+p tree.balanced?
+sleep 0.5
+
+puts "Printing trees on order type..."
+sleep 0.5
+
+puts "Level Order:"
+sleep 0.5
+p tree.level_order
+sleep 0.5
+
+puts "Preorder:"
+sleep 0.5
+p tree.preorder
+sleep 0.5
+
+puts "Postorder:"
+sleep 0.5
+p tree.postorder
+sleep 0.5
+
+puts "Inorder:"
+sleep 0.5
+p tree.inorder
+sleep 0.5
+
+puts 'To randomly add numbers over 100 to the tree, press any key '
+STDIN.getc
+repeat = rand(5..10)
+repeat.times do
+  add = rand(100..500)
+  puts "Adding #{add}..."
+  tree.insert(add)
+  sleep 0.5
+end
+
+puts "Current Tree:"
+sleep 0.5
 tree.pretty_print
+sleep 0.5
+
+puts "Tree balanced?"
+sleep 0.5
+p tree.balanced?
+sleep 0.5
+
+puts "Rebalancing..."
+tree.rebalance
+sleep 0.5
+
+puts "Current Tree:"
+sleep 0.5
+tree.pretty_print
+sleep 0.5
+
+puts "Tree balanced?"
+sleep 0.5
+p tree.balanced?
+sleep 0.5
+
+puts "Printing trees on order type..."
+sleep 0.5
+
+puts "Level Order:"
+sleep 0.5
+p tree.level_order
+sleep 0.5
+
+puts "Preorder:"
+sleep 0.5
+p tree.preorder
+sleep 0.5
+
+puts "Postorder:"
+sleep 0.5
+p tree.postorder
+sleep 0.5
+
+puts "Inorder:"
+sleep 0.5
+p tree.inorder
+sleep 0.5
