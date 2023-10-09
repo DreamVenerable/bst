@@ -5,7 +5,6 @@ class Node
     @data = data
     @left = left
     @right = right
-    @h = 0
   end
 end
 
@@ -57,15 +56,18 @@ class Tree
     elsif root.right.nil?
       root = root.left
     else
+
       if root.right.left.nil?
         holder = root.right.data
         delete(holder)
         root.data = holder
       else
         temp = root.right
+
         while temp.left != nil
           temp = temp.left
         end
+
         holder = temp.data
         delete(holder)
         root.data = holder
