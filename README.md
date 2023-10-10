@@ -1,6 +1,6 @@
 <h2 align="center"><u>Balanced Binary Search Tree</u></h2>
 
-![bst usage example](img/bbst.gif)
+![bst usage example](img/bst.gif)
 
 <p align="center">
 <br>
